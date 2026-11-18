@@ -60,7 +60,8 @@ python app/tools/f4ctl.py --addr AA:BB:CC:DD:EE:FF anim clip.gif             # �
 
 ### Предупреждения
 
-- **Заводская прошивка будет стёрта** — копии в DFU-пакете производителя для цветной версии нет. Для F4 пакет лежит в [original/](original/).
+- **Заводская прошивка будет стёрта.** Для цветной версии заводского DFU-пакета нет, вернуть её прошивку не получится.
+- **Заводская прошивка из [original/](original/) — только для чёрно-белого No.1 F4** (OLED, SH1107). На цветную версию её не ставьте: там другой контроллер дисплея (ST7735S), и экран с ней работать не будет.
 - SWD закрыт (UICR PALL): если сломать путь в DFU, восстановление — только вскрытием (P0.20 на землю при сбросе) или полным стиранием по SWD.
 - Всё проверено на двух экземплярах. На других ревизиях платы пины и периферия могут отличаться.
 
@@ -71,7 +72,7 @@ python app/tools/f4ctl.py --addr AA:BB:CC:DD:EE:FF anim clip.gif             # �
 | `app/` | исходники прошивки, Makefile, утилиты `f4dfu.py`, `f4ctl.py` |
 | `RE_NOTES.md` | заметки по реверсу и железу обеих версий |
 | `backup/` | дампы загрузчиков, UICR/FICR и внешней флеш цветной версии |
-| `original/` | заводской DFU-пакет F4, графика из него, `f4gfx.py`, `enter_dfu.py` |
+| `original/` | заводской DFU-пакет **чёрно-белого** F4 (для цветной версии не подходит), графика из него, `f4gfx.py`, `enter_dfu.py` |
 
 ---
 
@@ -131,7 +132,8 @@ The full list of `f4ctl.py` commands is in RE_NOTES §8a. While a phone is conne
 
 ### Warnings
 
-- **The stock firmware will be erased.** There is no vendor DFU package for the colour variant; the F4 package is in [original/](original/).
+- **The stock firmware will be erased.** There is no vendor DFU package for the colour variant, so its stock firmware cannot be restored.
+- **The stock firmware in [original/](original/) is for the black-and-white No.1 F4 only** (OLED, SH1107). Do not flash it onto the colour variant: it has a different display controller (ST7735S), and the screen will not work with it.
 - SWD is locked (UICR PALL): if the DFU path breaks, recovery requires opening the case (P0.20 to ground during reset) or a full SWD erase.
 - Everything was tested on two units. Other board revisions may use different pins and peripherals.
 
@@ -142,4 +144,4 @@ The full list of `f4ctl.py` commands is in RE_NOTES §8a. While a phone is conne
 | `app/` | firmware sources, Makefile, `f4dfu.py` and `f4ctl.py` tools |
 | `RE_NOTES.md` | reverse-engineering and hardware notes for both variants |
 | `backup/` | bootloader, UICR/FICR and colour-variant external flash dumps |
-| `original/` | stock F4 DFU package, its graphics, `f4gfx.py`, `enter_dfu.py` |
+| `original/` | stock DFU package of the **black-and-white** F4 (not for the colour variant), its graphics, `f4gfx.py`, `enter_dfu.py` |
