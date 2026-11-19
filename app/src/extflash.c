@@ -14,6 +14,7 @@
 #define CMD_READ         0x03
 #define CMD_JEDEC_ID     0x9F
 #define CMD_RELEASE_DPD  0xAB
+#define CMD_DEEP_PD      0xB9
 #define CMD_RDSR1        0x05
 #define CMD_RDSR2        0x35
 #define CMD_WREN         0x06
@@ -49,13 +50,25 @@ static void deselect(void)
 }
 
 
-void extflash_id(uint8_t id[3])
+void extflash_sleep(void)
+{
+    select();
+    xfer(CMD_DEEP_PD);
+    deselect();
+    nrf_delay_us(10); /* tDP у типовых флеш — до 3 мкс */
+}
+
+void extflash_wake(void)
 {
     select();
     xfer(CMD_RELEASE_DPD);
     deselect();
     nrf_delay_us(50); /* tRES1 у типовых флеш — до 30 мкс */
+}
 
+void extflash_id(uint8_t id[3])
+{
+    extflash_wake();
     select();
     xfer(CMD_JEDEC_ID);
     for (int i = 0; i < 3; i++)

@@ -46,7 +46,8 @@ static const struct { uint8_t pin; uint8_t pull; } m_inputs[] = {
     { 18, GPIO_PIN_CNF_PULL_Pullup },
     { 19, GPIO_PIN_CNF_PULL_Pullup },
     { 28, GPIO_PIN_CNF_PULL_Disabled },
-    { 29, GPIO_PIN_CNF_PULL_Disabled },
+    /* Цветная версия: статус зарядки, открытый сток — без подтяжки плавает. */
+    { 29, GPIO_PIN_CNF_PULL_Pullup },
 };
 
 static bool m_hr_on;
@@ -132,6 +133,35 @@ void sensors_deinit(void)
     }
     /* Мотор держим выключенным, а не в воздухе: загрузчик этот пин не трогает. */
     pin_output(PIN_MOTOR, false);
+}
+
+void sensors_sleep(void)
+{
+    NRF_ADC->ENABLE = ADC_ENABLE_ENABLE_Disabled;
+    sensors_hr_enable(false);
+    sensors_motor(false);
+    for (uint32_t i = 0; i < sizeof(m_inputs) / sizeof(m_inputs[0]); i++)
+    {
+        uint32_t pin = m_inputs[i].pin;
+
+        if (SENSORS_WAKE_MASK & (1u << pin))
+        {
+            NRF_GPIO->PIN_CNF[pin] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos)
+                                   | (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos)
+                                   | (m_inputs[i].pull << GPIO_PIN_CNF_PULL_Pos)
+                                   | (GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos);
+        }
+        else
+        {
+            /* P0.10 на цветной версии прижат к 0: через подтяжку утекало бы ~0,2 мА. */
+            pin_analog(pin);
+        }
+    }
+}
+
+bool sensors_charging(void)
+{
+    return !(NRF_GPIO->IN & (1u << 29));
 }
 
 uint32_t sensors_inputs(void)

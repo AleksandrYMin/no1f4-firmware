@@ -22,12 +22,14 @@
 
 Подробности, включая пины, карту внешней флеш и разбор заводской прошивки, — в [RE_NOTES.md](RE_NOTES.md).
 
-### Что умеет прошивка (`app/`, версия 0.10.0)
+### Что умеет прошивка (`app/`, версия 0.13.0)
 
 - Драйвер цветного TFT (ST7735S) и монохромного OLED (SH1107, сборка с `DISPLAY_SH1107=1`).
 - Гашение экрана через 10 с, пробуждение касанием.
-- По касанию: вибрация и картинка или GIF-анимация, загруженная с компьютера во внешнюю флеш.
-- **Bluetooth-спуск камеры телефона:** браслет становится BLE-клавиатурой (HID) и по касанию посылает «громкость +». Проверено на Android.
+- Меню на сенсорной кнопке: короткое касание листает страницы (состояние, камера, скрипты, мышь, выключение), долгое (0,6 с) запускает действие страницы. Скрипты и мышь пока заготовки.
+- Глубокий сон (System OFF) со страницы выключения; будят касание или подключение зарядки.
+- Картинка или GIF-анимация, загруженная с компьютера во внешнюю флеш (долгое нажатие на странице состояния).
+- **Bluetooth-спуск камеры телефона:** браслет становится BLE-клавиатурой (HID) и по долгому нажатию на странице камеры посылает «громкость +». Проверено на Android.
 - Обновление по воздуху через заводской загрузчик сохраняется: команда `0x42` уводит в DFU, как в заводской прошивке.
 - Служебный протокол по BLE: чтение памяти, дампы, управление пинами, сырые команды дисплею, чтение и запись внешней флеш.
 
@@ -94,12 +96,14 @@ Manufacturer's spec sheet: [original/12-2.jpg](original/12-2.jpg).
 
 Details — pinout, external flash map, analysis of the stock firmware — are in [RE_NOTES.md](RE_NOTES.md) (in Russian).
 
-### Firmware features (`app/`, version 0.10.0)
+### Firmware features (`app/`, version 0.13.0)
 
 - Colour TFT driver (ST7735S) and monochrome OLED driver (SH1107, build with `DISPLAY_SH1107=1`).
 - Screen turns off after 10 s, wakes on touch.
-- On touch: vibration and a picture or GIF animation uploaded from a PC to the external flash.
-- **Bluetooth camera shutter:** the band acts as a BLE keyboard (HID) and sends "Volume Up" on touch. Tested on Android.
+- Touch-button menu: a short tap moves to the next page (status, camera, scripts, mouse, power off), a long press (0.6 s) runs the page action. Scripts and mouse are placeholders for now.
+- Deep sleep (System OFF) from the power-off page; a touch or plugging in the charger wakes it.
+- A picture or GIF animation uploaded from a PC to the external flash (long press on the status page).
+- **Bluetooth camera shutter:** the band acts as a BLE keyboard (HID) and sends "Volume Up" on a long press on the camera page. Tested on Android.
 - Over-the-air updates through the stock bootloader keep working: command `0x42` enters DFU, just like the stock firmware.
 - Service protocol over BLE: memory reads, dumps, pin control, raw display commands, external flash read and write.
 

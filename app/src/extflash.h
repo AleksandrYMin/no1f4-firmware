@@ -13,6 +13,11 @@
 #define EXTFLASH_SECTOR      4096u
 #define EXTFLASH_PAGE        256u
 
+/* Deep power-down (0xB9): флеш не отвечает ни на что, кроме 0xAB. Сброс чипа
+ * её не будит — питание у флеш своё. */
+void extflash_sleep(void);
+/* Выход из deep power-down (0xAB); безвредно, если флеш не спит. */
+void extflash_wake(void);
 /* Выводит флеш из deep power-down (0xAB) и читает JEDEC ID (0x9F). */
 void extflash_id(uint8_t id[3]);
 /* Чтение командой 0x03, 24-битный адрес. */
